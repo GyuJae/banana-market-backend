@@ -33,6 +33,10 @@ export class Post {
   @IsString()
   description: string;
 
+  @Field(() => Int)
+  @IsInt()
+  price: number;
+
   @Field(() => [String], { nullable: true })
   @IsString()
   files?: string[] | null;

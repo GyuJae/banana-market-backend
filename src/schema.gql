@@ -18,6 +18,11 @@ type LoginOutput {
   token: String
 }
 
+type CreatePostOutput {
+  ok: Boolean!
+  error: String
+}
+
 type Query {
   whoAmI: User!
 }
@@ -47,6 +52,7 @@ type Post {
   title: String!
   location: String!
   description: String!
+  price: Int!
   files: [String!]
   viewCount: Int!
   author: User!
@@ -74,6 +80,7 @@ type Mutation {
   createAccount(input: CreateAccountInput!): CreateAccountOutput!
   login(input: LoginInput!): LoginOutput!
   editUser(input: EditUserInput!): EditUserOutput!
+  createPost(input: CreatePostInput!): CreatePostOutput!
 }
 
 input CreateAccountInput {
@@ -92,4 +99,13 @@ input EditUserInput {
   name: String
   password: String
   location: String
+  avatar: String
+}
+
+input CreatePostInput {
+  title: String!
+  location: String!
+  description: String!
+  price: Int!
+  hashtagInput: String
 }

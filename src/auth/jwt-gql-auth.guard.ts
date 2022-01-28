@@ -1,6 +1,5 @@
 import { ExecutionContext, Injectable, CanActivate } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { User } from 'src/users/entity/User.entity';
 import { AuthService } from './auth.service';
 
 @Injectable()

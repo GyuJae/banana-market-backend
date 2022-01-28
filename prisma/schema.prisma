@@ -32,6 +32,7 @@ model Post {
   location    String
   description String
   files       String[]
+  price       Int
   viewCount   Int       @default(0)
   author      User?     @relation(fields: [authorId], references: [id])
   authorId    Int?

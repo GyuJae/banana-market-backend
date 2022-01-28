@@ -114,7 +114,7 @@ export class UsersService {
   }
 
   async editUser(
-    { password, name, location }: EditUserInput,
+    { password, name, location, avatar }: EditUserInput,
     currentUser: User,
   ): Promise<EditUserOutput> {
     try {
@@ -130,6 +130,7 @@ export class UsersService {
           name: name ? name : currentUser.name,
           password: password ? hashPassword : currentUser.password,
           location: location ? location : currentUser.location,
+          avatar: avatar ? avatar : currentUser.avatar,
         },
       });
       return {
