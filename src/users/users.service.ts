@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { AllUserOutput } from './dtos/AllUser.dto';
 import {
   CreateAccountInput,
   CreateAccountOutput,
@@ -8,6 +7,8 @@ import {
 import * as bcrypt from 'bcrypt';
 import { LoginInput, LoginOutput } from './dtos/Login.dto';
 import { AuthService } from 'src/auth/auth.service';
+import { EditUserInput, EditUserOutput } from './dtos/EditUser.dto';
+import { User } from './entity/User.entity';
 
 @Injectable()
 export class UsersService {
@@ -16,11 +17,9 @@ export class UsersService {
     private readonly authService: AuthService,
   ) {}
 
-  async allUser(): Promise<AllUserOutput> {
-    const users = await this.prismaService.user.findMany();
-    return {
-      users,
-    };
+  async findById({ id }: User): Promise<User> {
+    const user = await this.prismaService.user.findUnique({ where: { id } });
+    return user;
   }
 
   async createAccount({
@@ -105,6 +104,36 @@ export class UsersService {
       return {
         ok: true,
         token,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error,
+      };
+    }
+  }
+
+  async editUser(
+    { password, name, location }: EditUserInput,
+    currentUser: User,
+  ): Promise<EditUserOutput> {
+    try {
+      let hashPassword: string;
+      if (password) {
+        hashPassword = await bcrypt.hash(password, 10);
+      }
+      await this.prismaService.user.update({
+        where: {
+          id: currentUser.id,
+        },
+        data: {
+          name: name ? name : currentUser.name,
+          password: password ? hashPassword : currentUser.password,
+          location: location ? location : currentUser.location,
+        },
+      });
+      return {
+        ok: true,
       };
     } catch (error) {
       return {

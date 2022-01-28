@@ -2,8 +2,24 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type AllUserOutput {
-  users: [User!]
+type CreateAccountOutput {
+  ok: Boolean!
+  error: String
+}
+
+type EditUserOutput {
+  ok: Boolean!
+  error: String
+}
+
+type LoginOutput {
+  ok: Boolean!
+  error: String
+  token: String
+}
+
+type Query {
+  whoAmI: User!
 }
 
 type User {
@@ -54,24 +70,10 @@ type Hashtag {
   posts: [Post!]
 }
 
-type CreateAccountOutput {
-  ok: Boolean!
-  error: String
-}
-
-type LoginOutput {
-  ok: Boolean!
-  error: String
-  token: String
-}
-
-type Query {
-  allUser: AllUserOutput!
-}
-
 type Mutation {
   createAccount(input: CreateAccountInput!): CreateAccountOutput!
   login(input: LoginInput!): LoginOutput!
+  editUser(input: EditUserInput!): EditUserOutput!
 }
 
 input CreateAccountInput {
@@ -84,4 +86,10 @@ input CreateAccountInput {
 input LoginInput {
   email: String!
   password: String!
+}
+
+input EditUserInput {
+  name: String
+  password: String
+  location: String
 }

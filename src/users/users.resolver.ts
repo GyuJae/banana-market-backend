@@ -1,9 +1,12 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { AllUserOutput } from './dtos/AllUser.dto';
+import { CurrentUser } from 'src/auth/current-user.decorator';
+import { GqlAuthGuard } from 'src/auth/jwt-gql-auth.guard';
 import {
   CreateAccountInput,
   CreateAccountOutput,
 } from './dtos/CreateAccount.dto';
+import { EditUserInput, EditUserOutput } from './dtos/EditUser.dto';
 import { LoginInput, LoginOutput } from './dtos/Login.dto';
 import { User } from './entity/User.entity';
 import { UsersService } from './users.service';
@@ -12,9 +15,10 @@ import { UsersService } from './users.service';
 export class UsersResolver {
   constructor(private readonly userService: UsersService) {}
 
-  @Query(() => AllUserOutput)
-  async allUser(): Promise<AllUserOutput> {
-    return this.userService.allUser();
+  @Query(() => User)
+  @UseGuards(GqlAuthGuard)
+  async whoAmI(@CurrentUser() currentUser: User): Promise<User> {
+    return this.userService.findById(currentUser);
   }
 
   @Mutation(() => CreateAccountOutput)
@@ -27,5 +31,14 @@ export class UsersResolver {
   @Mutation(() => LoginOutput)
   async login(@Args('input') loginInput: LoginInput): Promise<LoginOutput> {
     return this.userService.login(loginInput);
+  }
+
+  @Mutation(() => EditUserOutput)
+  @UseGuards(GqlAuthGuard)
+  async editUser(
+    @Args('input') editUserInput: EditUserInput,
+    @CurrentUser() currentUser: User,
+  ): Promise<EditUserOutput> {
+    return this.userService.editUser(editUserInput, currentUser);
   }
 }
