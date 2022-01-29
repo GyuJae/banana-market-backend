@@ -8,16 +8,18 @@
 ## Post
 
 - [x] Create Post
-- [] Edit Post
-- [] change view count
-- [] change sold Out
+- [x] change view count
+- [x] Show detail post
+- [x] Edit Post
+- [x] change sold Out
+- [x] show Post by hashtag
+- [] Search Post
 - [] all show Post
-- [] show Post by hashtag
 - [] show post nearby me
 
 ## Hashtag
 
-- [] Create Hashtag
+- [x] Create Hashtag
 - [] Show Hashtag
 
 ## Like

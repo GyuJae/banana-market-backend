@@ -45,12 +45,12 @@ export class Post {
   @IsInt()
   viewCount: number;
 
-  @Field(() => User)
-  author: User;
+  @Field(() => User, { nullable: true })
+  author?: User | null;
 
-  @Field(() => [Like])
-  likes: Like[];
+  @Field(() => [Like], { nullable: true })
+  likes?: Like[] | null;
 
-  @Field(() => [Hashtag])
-  hashtags: Hashtag[];
+  @Field(() => [Hashtag], { nullable: true })
+  hashtags?: Hashtag[] | null;
 }

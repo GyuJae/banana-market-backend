@@ -23,26 +23,16 @@ type CreatePostOutput {
   error: String
 }
 
-type Query {
-  whoAmI: User!
+type EditPostOutput {
+  ok: Boolean!
+  error: String
 }
 
-type User {
-  id: Int!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  email: String!
-  name: String!
-  password: String!
-  location: String!
-  avatar: String
-  posts: [Post!]
+type ReadPostOutput {
+  ok: Boolean!
+  error: String
+  post: Post
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type Post {
   id: Int!
@@ -55,9 +45,26 @@ type Post {
   price: Int!
   files: [String!]
   viewCount: Int!
-  author: User!
-  likes: [Like!]!
-  hashtags: [Hashtag!]!
+  author: User
+  likes: [Like!]
+  hashtags: [Hashtag!]
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type User {
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  email: String!
+  name: String!
+  password: String!
+  location: String!
+  avatar: String
+  posts: [Post!]
 }
 
 type Like {
@@ -76,11 +83,43 @@ type Hashtag {
   posts: [Post!]
 }
 
+type SearchPostsOutput {
+  ok: Boolean!
+  error: String
+  posts: [Post!]
+}
+
+type ShowPostByHashtagOutput {
+  ok: Boolean!
+  error: String
+  posts: [Post!]
+}
+
+type Query {
+  whoAmI: User!
+  readPost(input: ReadPostInput!): ReadPostOutput!
+  showPostByHashtag(input: ShowPostByHashtagInput!): ShowPostByHashtagOutput!
+  searchPosts(input: SearchPostsInput!): SearchPostsOutput!
+}
+
+input ReadPostInput {
+  postId: Int!
+}
+
+input ShowPostByHashtagInput {
+  hashtag: String!
+}
+
+input SearchPostsInput {
+  keyword: String!
+}
+
 type Mutation {
   createAccount(input: CreateAccountInput!): CreateAccountOutput!
   login(input: LoginInput!): LoginOutput!
   editUser(input: EditUserInput!): EditUserOutput!
   createPost(input: CreatePostInput!): CreatePostOutput!
+  editPost(input: EditPostInput!): EditPostOutput!
 }
 
 input CreateAccountInput {
@@ -107,5 +146,15 @@ input CreatePostInput {
   location: String!
   description: String!
   price: Int!
+  hashtagInput: String
+}
+
+input EditPostInput {
+  postId: Int!
+  soldOut: Boolean
+  title: String
+  location: String
+  description: String
+  price: Float
   hashtagInput: String
 }
