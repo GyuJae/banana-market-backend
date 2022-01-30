@@ -1,5 +1,13 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Int,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { GqlAuthGuard } from 'src/auth/jwt-gql-auth.guard';
 import { User } from 'src/users/entity/User.entity';
@@ -11,11 +19,17 @@ import {
   ShowPostByHashtagInput,
   ShowPostByHashtagOutput,
 } from './dtos/ShowPostByHashtag.dto';
+import { Post } from './entity/Post.entity';
 import { PostsService } from './posts.service';
 
-@Resolver()
+@Resolver(() => Post)
 export class PostsResolver {
   constructor(private readonly postService: PostsService) {}
+
+  @ResolveField(() => Int)
+  async likeCount(@Parent() post: Post): Promise<number> {
+    return this.postService.likeCount(post);
+  }
 
   @Query(() => ReadPostOutput)
   @UseGuards(GqlAuthGuard)

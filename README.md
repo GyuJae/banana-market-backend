@@ -13,7 +13,7 @@
 - [x] Edit Post
 - [x] change sold Out
 - [x] show Post by hashtag
-- [] Search Post
+- [x] Search Post
 - [] all show Post
 - [] show post nearby me
 
@@ -24,5 +24,5 @@
 
 ## Like
 
-- [] connet like
-- [] connet unlike
+- [x] connet like
+- [x] connet unlike

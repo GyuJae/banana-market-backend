@@ -1,4 +1,5 @@
 import { Resolver } from '@nestjs/graphql';
+import { Hashtag } from './entity/Hashtag.entity';
 
-@Resolver()
+@Resolver(() => Hashtag)
 export class HashtagsResolver {}

@@ -48,6 +48,7 @@ type Post {
   author: User
   likes: [Like!]
   hashtags: [Hashtag!]
+  likeCount: Int!
 }
 
 """
@@ -120,6 +121,7 @@ type Mutation {
   editUser(input: EditUserInput!): EditUserOutput!
   createPost(input: CreatePostInput!): CreatePostOutput!
   editPost(input: EditPostInput!): EditPostOutput!
+  toggleLike(input: ToggleLikeInput!): CreateAccountOutput!
 }
 
 input CreateAccountInput {
@@ -157,4 +159,8 @@ input EditPostInput {
   description: String
   price: Float
   hashtagInput: String
+}
+
+input ToggleLikeInput {
+  postId: Int!
 }

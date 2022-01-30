@@ -9,6 +9,7 @@ import {
   ShowPostByHashtagInput,
   ShowPostByHashtagOutput,
 } from './dtos/ShowPostByHashtag.dto';
+import { Post } from './entity/Post.entity';
 
 @Injectable()
 export class PostsService {
@@ -189,6 +190,22 @@ export class PostsService {
         ok: false,
         error,
       };
+    }
+  }
+
+  async likeCount({ id }: Post): Promise<number> {
+    try {
+      const likes = await this.prismaService.like.findMany({
+        where: {
+          postId: id,
+        },
+      });
+      if (!likes) {
+        return 0;
+      }
+      return likes.length;
+    } catch {
+      return 0;
     }
   }
 }

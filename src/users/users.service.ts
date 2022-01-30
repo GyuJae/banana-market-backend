@@ -89,14 +89,14 @@ export class UsersService {
       });
       if (!user) {
         return {
-          ok: true,
+          ok: false,
           token: 'This Email does not exist.',
         };
       }
       const passwordCheck = await bcrypt.compare(password, user.password);
       if (!passwordCheck) {
         return {
-          ok: true,
+          ok: false,
           token: 'This password is wrong.',
         };
       }
