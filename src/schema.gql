@@ -122,6 +122,7 @@ type Mutation {
   createPost(input: CreatePostInput!): CreatePostOutput!
   editPost(input: EditPostInput!): EditPostOutput!
   toggleLike(input: ToggleLikeInput!): CreateAccountOutput!
+  sendMessage: Boolean!
 }
 
 input CreateAccountInput {
@@ -163,4 +164,8 @@ input EditPostInput {
 
 input ToggleLikeInput {
   postId: Int!
+}
+
+type Subscription {
+  receiveMessage: String!
 }

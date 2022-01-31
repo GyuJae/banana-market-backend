@@ -8,8 +8,23 @@ export class GqlAuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context);
-    if (ctx.getContext().req.headers.hasOwnProperty('x-jwt')) {
+    if (
+      ctx.getContext().hasOwnProperty('req') &&
+      ctx.getContext().req.headers.hasOwnProperty('x-jwt')
+    ) {
       const token = ctx.getContext().req.headers['x-jwt'];
+      const user = await this.authService.verify(token);
+
+      const gqlContext = ctx.getContext();
+      if (user) {
+        gqlContext['user'] = user;
+        return true;
+      } else {
+        gqlContext['uesr'] = null;
+      }
+    }
+    if (ctx.getContext().hasOwnProperty('x-jwt')) {
+      const token = ctx.getContext()['x-jwt'];
       const user = await this.authService.verify(token);
       const gqlContext = ctx.getContext();
       if (user) {

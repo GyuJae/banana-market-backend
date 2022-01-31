@@ -8,11 +8,26 @@ import { LikesModule } from './likes/likes.module';
 import { HashtagsModule } from './hashtags/hashtags.module';
 import { CommonModule } from './common/common.module';
 import { AuthModule } from './auth/auth.module';
+import { MessagesModule } from './messages/messages.module';
 
 @Module({
   imports: [
     GraphQLModule.forRoot({
+      installSubscriptionHandlers: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      subscriptions: {
+        'subscriptions-transport-ws': {
+          onConnect: (connectionParams) => {
+            if (connectionParams.hasOwnProperty('x-jwt')) {
+              const token = connectionParams['x-jwt'];
+              return {
+                'x-jwt': token,
+              };
+            }
+            return {};
+          },
+        },
+      },
     }),
     UsersModule,
     PrismaModule,
@@ -21,6 +36,7 @@ import { AuthModule } from './auth/auth.module';
     HashtagsModule,
     CommonModule,
     AuthModule,
+    MessagesModule,
   ],
   controllers: [],
   providers: [],
