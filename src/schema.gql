@@ -66,6 +66,28 @@ type User {
   location: String!
   avatar: String
   posts: [Post!]
+  messageRooms: [MessageRoom!]
+}
+
+type MessageRoom {
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  post: Post!
+  postId: Int!
+  messages: [Message!]!
+  users: [User!]!
+}
+
+type Message {
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: User!
+  userId: Int!
+  messageRoom: MessageRoom!
+  messageRoomId: Int!
+  payload: String!
 }
 
 type Like {
@@ -96,11 +118,23 @@ type ShowPostByHashtagOutput {
   posts: [Post!]
 }
 
+type SendMessageOutput {
+  ok: Boolean!
+  error: String
+}
+
+type ShowMessagesOutput {
+  ok: Boolean!
+  error: String
+  messages: [Message!]
+}
+
 type Query {
   whoAmI: User!
   readPost(input: ReadPostInput!): ReadPostOutput!
   showPostByHashtag(input: ShowPostByHashtagInput!): ShowPostByHashtagOutput!
   searchPosts(input: SearchPostsInput!): SearchPostsOutput!
+  showMessages(input: ShowMessagesInput!): ShowMessagesOutput!
 }
 
 input ReadPostInput {
@@ -115,6 +149,10 @@ input SearchPostsInput {
   keyword: String!
 }
 
+input ShowMessagesInput {
+  roomId: Int!
+}
+
 type Mutation {
   createAccount(input: CreateAccountInput!): CreateAccountOutput!
   login(input: LoginInput!): LoginOutput!
@@ -122,7 +160,7 @@ type Mutation {
   createPost(input: CreatePostInput!): CreatePostOutput!
   editPost(input: EditPostInput!): EditPostOutput!
   toggleLike(input: ToggleLikeInput!): CreateAccountOutput!
-  sendMessage: Boolean!
+  sendMessage(input: SendMessageInput!): SendMessageOutput!
 }
 
 input CreateAccountInput {
@@ -166,6 +204,12 @@ input ToggleLikeInput {
   postId: Int!
 }
 
+input SendMessageInput {
+  roomId: Int
+  payload: String!
+  postId: Int
+}
+
 type Subscription {
-  receiveMessage: String!
+  receiveMessage(roomId: Float!): String!
 }

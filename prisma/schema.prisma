@@ -23,6 +23,7 @@ model User {
   likes     Like[]
   messages  Message[]
 
+  messageRooms MessageRoom[]
 }
 
 model Post {
@@ -70,6 +71,7 @@ model MessageRoom {
   messages  Message[]
   post      Post      @relation(fields: [postId], references: [id])
   postId    Int
+  users     User[]
 }
 
 model Message {
