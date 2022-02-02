@@ -10,7 +10,11 @@ import { CreateAccountInput } from './CreateAccount.dto';
 
 @InputType()
 export class EditUserInput extends PartialType(
-  PickType(CreateAccountInput, ['location', 'name', 'password'], InputType),
+  PickType(
+    CreateAccountInput,
+    ['location', 'name', 'password', 'lat', 'lon'],
+    InputType,
+  ),
 ) {
   @Field(() => String, { nullable: true })
   avatar?: string | null;

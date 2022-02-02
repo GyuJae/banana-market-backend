@@ -19,9 +19,12 @@ model User {
   password  String
   posts     Post[]
   location  String
+  lat       Float
+  lon       Float
   avatar    String?
   likes     Like[]
   messages  Message[]
+
 
   messageSellRoom MessageRoom[] @relation("seller")
   messageBuyRoom  MessageRoom[] @relation("buyer")
@@ -34,6 +37,8 @@ model Post {
   soldOut      Boolean       @default(false)
   title        String        @db.VarChar(255)
   location     String
+  lat          Float
+  lon          Float
   description  String
   files        String[]
   price        Int

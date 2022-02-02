@@ -19,6 +19,7 @@ import {
   ShowPostByHashtagInput,
   ShowPostByHashtagOutput,
 } from './dtos/ShowPostByHashtag.dto';
+import { ShowPostsNearbyMeOutput } from './dtos/ShowPostsNearbyMe.dto';
 import { Post } from './entity/Post.entity';
 import { PostsService } from './posts.service';
 
@@ -38,6 +39,14 @@ export class PostsResolver {
     @CurrentUser() currentUser: User,
   ): Promise<ReadPostOutput> {
     return this.postService.readPost(readPostInput, currentUser);
+  }
+
+  @Query(() => ShowPostsNearbyMeOutput)
+  @UseGuards(GqlAuthGuard)
+  async showPostsNearbyMe(
+    @CurrentUser() currentUser: User,
+  ): Promise<ShowPostsNearbyMeOutput> {
+    return this.postService.showPostsNearbyMe(currentUser);
   }
 
   @Query(() => ShowPostByHashtagOutput)

@@ -20,7 +20,7 @@
 ## Hashtag
 
 - [x] Create Hashtag
-- [] Show Hashtag
+- [x] Show Hashtag
 
 ## Like
 

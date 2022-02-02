@@ -1,5 +1,5 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { IsBoolean, IsDate, IsInt, IsString } from 'class-validator';
+import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
+import { IsBoolean, IsDate, IsInt, IsString, IsNumber } from 'class-validator';
 
 @ObjectType({ isAbstract: true })
 export class Post {
@@ -25,6 +25,14 @@ export class Post {
   @Field(() => String)
   @IsString()
   location: string;
+
+  @Field(() => Float)
+  @IsNumber()
+  lat: number;
+
+  @Field(() => Float)
+  @IsNumber()
+  lon: number;
 
   @Field(() => String)
   @IsString()

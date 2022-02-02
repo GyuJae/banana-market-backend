@@ -27,6 +27,8 @@ export class UsersService {
     password,
     location,
     name,
+    lat,
+    lon,
   }: CreateAccountInput): Promise<CreateAccountOutput> {
     try {
       const emailExist = await this.prismaService.user.findUnique({
@@ -65,6 +67,8 @@ export class UsersService {
           password: hashPassword,
           location,
           name,
+          lat,
+          lon,
         },
       });
       return {
@@ -114,7 +118,7 @@ export class UsersService {
   }
 
   async editUser(
-    { password, name, location, avatar }: EditUserInput,
+    { password, name, location, avatar, lat, lon }: EditUserInput,
     currentUser: User,
   ): Promise<EditUserOutput> {
     try {
@@ -131,6 +135,8 @@ export class UsersService {
           password: password ? hashPassword : currentUser.password,
           location: location ? location : currentUser.location,
           avatar: avatar ? avatar : currentUser.avatar,
+          lat: lat ? lat : currentUser.lat,
+          lon: lon ? lon : currentUser.lon,
         },
       });
       return {

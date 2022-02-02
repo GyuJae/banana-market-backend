@@ -1,5 +1,5 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { IsDate, IsEmail, IsString } from 'class-validator';
+import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
+import { IsDate, IsEmail, IsNumber, IsString } from 'class-validator';
 
 @ObjectType({ isAbstract: true })
 export class User {
@@ -29,6 +29,14 @@ export class User {
   @Field(() => String)
   @IsString()
   location: string;
+
+  @Field(() => Float)
+  @IsNumber()
+  lat: number;
+
+  @Field(() => Float)
+  @IsNumber()
+  lon: number;
 
   @Field(() => String, { nullable: true })
   @IsString()

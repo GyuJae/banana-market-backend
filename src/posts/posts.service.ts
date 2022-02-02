@@ -9,6 +9,7 @@ import {
   ShowPostByHashtagInput,
   ShowPostByHashtagOutput,
 } from './dtos/ShowPostByHashtag.dto';
+import { ShowPostsNearbyMeOutput } from './dtos/ShowPostsNearbyMe.dto';
 import { Post } from './entity/Post.entity';
 
 @Injectable()
@@ -16,13 +17,24 @@ export class PostsService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async createPost(
-    { title, location, description, hashtagInput, price }: CreatePostInput,
+    {
+      title,
+      location,
+      description,
+      hashtagInput,
+      price,
+      lat,
+      lon,
+    }: CreatePostInput,
     currentUser: User,
   ): Promise<CreatePostOutput> {
     try {
-      const hashtagsObjs = hashtagInput.split(',').map((hashtag) => {
-        return { where: { hashtag }, create: { hashtag } };
-      });
+      let hashtagsObjs = [];
+      if (hashtagInput) {
+        hashtagsObjs = hashtagInput.split(',').map((hashtag) => {
+          return { where: { hashtag }, create: { hashtag } };
+        });
+      }
 
       await this.prismaService.post.create({
         data: {
@@ -34,6 +46,8 @@ export class PostsService {
           },
           location,
           description,
+          lat,
+          lon,
           price,
           ...(hashtagsObjs.length > 0 && {
             hashtags: {
@@ -92,10 +106,34 @@ export class PostsService {
   }
 
   async editPost(
-    { postId, hashtagInput, ...editPostInput }: EditPostInput,
+    {
+      postId,
+      hashtagInput,
+      soldOut,
+      title,
+      location,
+      description,
+      price,
+      lat,
+      lon,
+    }: EditPostInput,
     currentUser: User,
   ): Promise<EditPostOutput> {
     try {
+      const editPostInput = {
+        soldOut,
+        title,
+        location,
+        description,
+        price,
+        lat,
+        lon,
+      };
+      Object.keys(editPostInput).forEach((key) => {
+        if (editPostInput[key] === null) {
+          delete editPostInput[key];
+        }
+      });
       const post = await this.prismaService.post.findUnique({
         where: { id: postId },
         select: {
@@ -206,6 +244,37 @@ export class PostsService {
       return likes.length;
     } catch {
       return 0;
+    }
+  }
+
+  async showPostsNearbyMe({
+    lat: userLat,
+    lon: userLon,
+  }: User): Promise<ShowPostsNearbyMeOutput> {
+    try {
+      const posts = await this.prismaService.post.findMany({
+        where: {
+          AND: {
+            lat: {
+              gte: userLat - 1,
+              lte: userLat + 1,
+            },
+            lon: {
+              gte: userLon - 1,
+              lte: userLon + 1,
+            },
+          },
+        },
+      });
+      return {
+        ok: true,
+        posts,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error,
+      };
     }
   }
 }

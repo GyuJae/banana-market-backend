@@ -1,25 +1,24 @@
-import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
+import {
+  Field,
+  InputType,
+  Int,
+  ObjectType,
+  PartialType,
+  PickType,
+} from '@nestjs/graphql';
 import { CoreOutput } from 'src/common/dtos/CoreOutput.dto';
+import { Post } from '../entity/Post.entity';
 
 @InputType()
-export class EditPostInput {
+export class EditPostInput extends PartialType(
+  PickType(
+    Post,
+    ['soldOut', 'title', 'location', 'description', 'price', 'lat', 'lon'],
+    InputType,
+  ),
+) {
   @Field(() => Int)
   postId: number;
-
-  @Field(() => Boolean, { nullable: true })
-  soldOut?: boolean | null;
-
-  @Field(() => String, { nullable: true })
-  title?: string | null;
-
-  @Field(() => String, { nullable: true })
-  location?: string | null;
-
-  @Field(() => String, { nullable: true })
-  description?: string | null;
-
-  @Field(() => Number, { nullable: true })
-  price?: number | null;
 
   @Field(() => String, { nullable: true })
   hashtagInput?: string | null;
