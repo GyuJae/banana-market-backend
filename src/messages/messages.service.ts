@@ -19,16 +19,35 @@ export class MessagesService {
   ): Promise<SendMessageOutput> {
     try {
       let messageRoom: any;
+      const post = await this.prismaService.post.findUnique({
+        where: {
+          id: postId,
+        },
+      });
+      if (!post) {
+        return {
+          ok: false,
+          error: 'This post id is wrong',
+        };
+      }
       if (roomId) {
         messageRoom = await this.prismaService.messageRoom.findUnique({
           where: {
             id: roomId,
           },
         });
+        if (!messageRoom) {
+          return {
+            ok: false,
+            error: 'This roomId is Wrong',
+          };
+        }
       } else {
         messageRoom = await this.prismaService.messageRoom.create({
           data: {
-            postId,
+            postId: post.id,
+            sellerId: post.authorId,
+            buyerId: currentUser.id,
           },
         });
       }
@@ -63,10 +82,22 @@ export class MessagesService {
         },
         select: {
           messages: true,
-          users: true,
+          sellerId: true,
+          buyerId: true,
         },
       });
-      console.log(room.messages);
+      if (!room) {
+        return {
+          ok: false,
+          error: 'This roomId is Wrong',
+        };
+      }
+      if (currentUser.id !== room.sellerId && currentUser.id !== room.buyerId) {
+        return {
+          ok: false,
+          error: 'No Authorized',
+        };
+      }
       return {
         ok: true,
         messages: room.messages,

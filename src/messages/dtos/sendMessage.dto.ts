@@ -9,8 +9,8 @@ export class SendMessageInput {
   @Field(() => String)
   payload: string;
 
-  @Field(() => Int, { nullable: true })
-  postId?: number;
+  @Field(() => Int)
+  postId: number;
 }
 
 @ObjectType()

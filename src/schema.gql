@@ -45,9 +45,7 @@ type Post {
   price: Int!
   files: [String!]
   viewCount: Int!
-  author: User
-  likes: [Like!]
-  hashtags: [Hashtag!]
+  authorId: Int!
   likeCount: Int!
 }
 
@@ -55,56 +53,6 @@ type Post {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
-
-type User {
-  id: Int!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  email: String!
-  name: String!
-  password: String!
-  location: String!
-  avatar: String
-  posts: [Post!]
-  messageRooms: [MessageRoom!]
-}
-
-type MessageRoom {
-  id: Int!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  post: Post!
-  postId: Int!
-  messages: [Message!]!
-  users: [User!]!
-}
-
-type Message {
-  id: Int!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  user: User!
-  userId: Int!
-  messageRoom: MessageRoom!
-  messageRoomId: Int!
-  payload: String!
-}
-
-type Like {
-  id: Int!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  post: Post!
-  user: User!
-}
-
-type Hashtag {
-  id: Int!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  hashtag: String!
-  posts: [Post!]
-}
 
 type SearchPostsOutput {
   ok: Boolean!
@@ -129,12 +77,32 @@ type ShowMessagesOutput {
   messages: [Message!]
 }
 
+type Message {
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  userId: Int!
+  messageRoomId: Int!
+  payload: String!
+}
+
 type Query {
   whoAmI: User!
   readPost(input: ReadPostInput!): ReadPostOutput!
   showPostByHashtag(input: ShowPostByHashtagInput!): ShowPostByHashtagOutput!
   searchPosts(input: SearchPostsInput!): SearchPostsOutput!
   showMessages(input: ShowMessagesInput!): ShowMessagesOutput!
+}
+
+type User {
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  email: String!
+  name: String!
+  password: String!
+  location: String!
+  avatar: String
 }
 
 input ReadPostInput {
@@ -207,7 +175,7 @@ input ToggleLikeInput {
 input SendMessageInput {
   roomId: Int
   payload: String!
-  postId: Int
+  postId: Int!
 }
 
 type Subscription {

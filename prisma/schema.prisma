@@ -23,7 +23,8 @@ model User {
   likes     Like[]
   messages  Message[]
 
-  messageRooms MessageRoom[]
+  messageSellRoom MessageRoom[] @relation("seller")
+  messageBuyRoom  MessageRoom[] @relation("buyer")
 }
 
 model Post {
@@ -71,7 +72,12 @@ model MessageRoom {
   messages  Message[]
   post      Post      @relation(fields: [postId], references: [id])
   postId    Int
-  users     User[]
+  seller    User      @relation(name: "seller", fields: [sellerId], references: [id])
+  sellerId  Int
+  buyer     User      @relation(name: "buyer", fields: [buyerId], references: [id])
+  buyerId   Int
+
+
 }
 
 model Message {

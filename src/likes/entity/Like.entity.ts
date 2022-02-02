@@ -1,7 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { IsDate } from 'class-validator';
-import { Post } from 'src/posts/entity/Post.entity';
-import { User } from 'src/users/entity/User.entity';
+import { IsDate, IsInt } from 'class-validator';
 
 @ObjectType({ isAbstract: true })
 export class Like {
@@ -16,9 +14,11 @@ export class Like {
   @IsDate()
   updatedAt: Date;
 
-  @Field(() => Post)
-  post: Post;
+  @Field(() => Int)
+  @IsInt()
+  postId: number;
 
-  @Field(() => User)
-  user: User;
+  @Field(() => Int)
+  @IsInt()
+  userId: number;
 }

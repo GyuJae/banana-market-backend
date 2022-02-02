@@ -1,8 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { IsBoolean, IsDate, IsInt, IsString } from 'class-validator';
-import { Hashtag } from 'src/hashtags/entity/Hashtag.entity';
-import { Like } from 'src/likes/entity/Like.entity';
-import { User } from 'src/users/entity/User.entity';
 
 @ObjectType({ isAbstract: true })
 export class Post {
@@ -45,12 +42,7 @@ export class Post {
   @IsInt()
   viewCount: number;
 
-  @Field(() => User, { nullable: true })
-  author?: User | null;
-
-  @Field(() => [Like], { nullable: true })
-  likes?: Like[] | null;
-
-  @Field(() => [Hashtag], { nullable: true })
-  hashtags?: Hashtag[] | null;
+  @Field(() => Int)
+  @IsInt()
+  authorId: number;
 }

@@ -1,8 +1,8 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { IsDate, IsNumber, IsString } from 'class-validator';
+import { IsDate, IsNumber } from 'class-validator';
 
 @ObjectType({ isAbstract: true })
-export class Message {
+export class MessageRoom {
   @Field(() => Int)
   id: number;
 
@@ -16,13 +16,13 @@ export class Message {
 
   @Field(() => Int)
   @IsNumber()
-  userId: number;
+  postId: number;
 
   @Field(() => Int)
   @IsNumber()
-  messageRoomId: number;
+  sellerId: number;
 
-  @Field(() => String)
-  @IsString()
-  payload: string;
+  @Field(() => Int)
+  @IsNumber()
+  buyerId: number;
 }

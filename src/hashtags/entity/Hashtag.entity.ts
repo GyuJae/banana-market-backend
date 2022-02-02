@@ -1,6 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { IsDate, IsEmail } from 'class-validator';
-import { Post } from 'src/posts/entity/Post.entity';
 
 @ObjectType({ isAbstract: true })
 export class Hashtag {
@@ -18,7 +17,4 @@ export class Hashtag {
   @Field(() => String)
   @IsEmail()
   hashtag: string;
-
-  @Field(() => [Post], { nullable: true })
-  posts?: Post[] | null;
 }
