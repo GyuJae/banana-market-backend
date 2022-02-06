@@ -14,8 +14,7 @@
 - [x] change sold Out
 - [x] show Post by hashtag
 - [x] Search Post
-- [] all show Post
-- [] show post nearby me
+- [x] show post nearby me
 
 ## Hashtag
 

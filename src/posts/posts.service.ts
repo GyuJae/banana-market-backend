@@ -214,9 +214,18 @@ export class PostsService {
     try {
       const posts = await this.prismaService.post.findMany({
         where: {
-          title: {
-            contains: keyword,
-          },
+          OR: [
+            {
+              title: {
+                contains: keyword,
+              },
+            },
+            {
+              location: {
+                contains: keyword,
+              },
+            },
+          ],
         },
       });
       return {
