@@ -4,6 +4,7 @@ import { PostsResolver } from './posts.resolver';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtModule } from '@nestjs/jwt';
+import { UsersService } from 'src/users/users.service';
 
 @Module({
   imports: [
@@ -13,6 +14,6 @@ import { JwtModule } from '@nestjs/jwt';
       signOptions: { expiresIn: '7d' },
     }),
   ],
-  providers: [PostsService, PostsResolver, AuthService],
+  providers: [PostsService, PostsResolver, AuthService, UsersService],
 })
 export class PostsModule {}

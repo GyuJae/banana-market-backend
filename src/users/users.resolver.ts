@@ -18,7 +18,7 @@ export class UsersResolver {
   @Query(() => User)
   @UseGuards(GqlAuthGuard)
   async whoAmI(@CurrentUser() currentUser: User): Promise<User> {
-    return this.userService.findById(currentUser);
+    return this.userService.findById(currentUser.id);
   }
 
   @Mutation(() => CreateAccountOutput)

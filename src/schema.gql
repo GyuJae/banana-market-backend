@@ -49,12 +49,26 @@ type Post {
   viewCount: Int!
   authorId: Int!
   likeCount: Int!
+  author: User!
 }
 
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type User {
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  email: String!
+  name: String!
+  password: String!
+  location: String!
+  lat: Float!
+  lon: Float!
+  avatar: String
+}
 
 type SearchPostsOutput {
   ok: Boolean!
@@ -101,19 +115,6 @@ type Query {
   showPostByHashtag(input: ShowPostByHashtagInput!): ShowPostByHashtagOutput!
   searchPosts(input: SearchPostsInput!): SearchPostsOutput!
   showMessages(input: ShowMessagesInput!): ShowMessagesOutput!
-}
-
-type User {
-  id: Int!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  email: String!
-  name: String!
-  password: String!
-  location: String!
-  lat: Float!
-  lon: Float!
-  avatar: String
 }
 
 input ReadPostInput {

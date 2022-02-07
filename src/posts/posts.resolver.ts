@@ -11,6 +11,7 @@ import {
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { GqlAuthGuard } from 'src/auth/jwt-gql-auth.guard';
 import { User } from 'src/users/entity/User.entity';
+import { UsersService } from 'src/users/users.service';
 import { CreatePostInput, CreatePostOutput } from './dtos/CreatePost.dto';
 import { EditPostInput, EditPostOutput } from './dtos/EditPost.dto';
 import { ReadPostInput, ReadPostOutput } from './dtos/ReadPost.dto';
@@ -25,11 +26,19 @@ import { PostsService } from './posts.service';
 
 @Resolver(() => Post)
 export class PostsResolver {
-  constructor(private readonly postService: PostsService) {}
+  constructor(
+    private readonly postService: PostsService,
+    private readonly userService: UsersService,
+  ) {}
 
   @ResolveField(() => Int)
   async likeCount(@Parent() post: Post): Promise<number> {
     return this.postService.likeCount(post);
+  }
+
+  @ResolveField(() => User)
+  async author(@Parent() { authorId }: Post): Promise<User> {
+    return this.userService.findById(authorId);
   }
 
   @Query(() => ReadPostOutput)

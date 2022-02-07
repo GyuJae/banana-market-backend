@@ -17,7 +17,7 @@ export class UsersService {
     private readonly authService: AuthService,
   ) {}
 
-  async findById({ id }: User): Promise<User> {
+  async findById(id: number): Promise<User> {
     const user = await this.prismaService.user.findUnique({ where: { id } });
     return user;
   }
